@@ -265,7 +265,6 @@ contract RaffleTest is Test {
         }
         uint256 startingTimeStamp = raffle.getLastTimestamp();
         uint256 winnerStartingBalance = expectedWinner.balance;
-
         // Act
         /* record the performUpkeep's (performUpkeep) event logs in memory and retrieve the
          requestId(random generated number) from the second log's topic array second index
@@ -299,15 +298,13 @@ contract RaffleTest is Test {
 
         // call fulfillRandomWords from vrfCoordinator contract and pass a valid requestId this time.
         VRFCoordinatorV2_5Mock(vrfCoordinator).fulfillRandomWords(s_requestId, address(raffle));
-
         // Assert
         address recentWinner = raffle.getRecentWinner();
         Raffle.RaffleState raffleState = raffle.getState();
         uint256 winnerBalance = address(recentWinner).balance;
         uint256 endingTimeStamp = raffle.getLastTimestamp();
         uint256 prize = address(raffle).balance; // (additionalParticipants + 1) * FUNDING
-        // console.log(raffleState);
-
+        // console.log(raffleState);+
         assert(recentWinner == expectedWinner);
         assert(uint256(raffleState) == 0);
         assert(endingTimeStamp > startingTimeStamp);
