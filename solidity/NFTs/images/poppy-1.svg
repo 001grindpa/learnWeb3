@@ -1,0 +1,63 @@
+<svg width="320" height="320" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+  <rect width="320" height="320" fill="#8fd3ff"/>
+
+  <!-- Tail -->
+  <rect x="40" y="140" width="20" height="20" fill="#5b3a29"/>
+  <rect x="60" y="120" width="20" height="20" fill="#5b3a29"/>
+
+  <!-- Body -->
+  <rect x="80" y="120" width="20" height="20" fill="#d9a066"/>
+  <rect x="100" y="120" width="20" height="20" fill="#d9a066"/>
+  <rect x="120" y="120" width="20" height="20" fill="#d9a066"/>
+  <rect x="140" y="120" width="20" height="20" fill="#d9a066"/>
+  <rect x="160" y="120" width="20" height="20" fill="#d9a066"/>
+
+  <rect x="80" y="140" width="20" height="20" fill="#d9a066"/>
+  <rect x="100" y="140" width="20" height="20" fill="#f2c185"/>
+  <rect x="120" y="140" width="20" height="20" fill="#f2c185"/>
+  <rect x="140" y="140" width="20" height="20" fill="#f2c185"/>
+  <rect x="160" y="140" width="20" height="20" fill="#d9a066"/>
+
+  <rect x="80" y="160" width="20" height="20" fill="#d9a066"/>
+  <rect x="100" y="160" width="20" height="20" fill="#f2c185"/>
+  <rect x="120" y="160" width="20" height="20" fill="#f2c185"/>
+  <rect x="140" y="160" width="20" height="20" fill="#f2c185"/>
+  <rect x="160" y="160" width="20" height="20" fill="#d9a066"/>
+
+  <!-- Legs -->
+  <rect x="90" y="180" width="20" height="40" fill="#5b3a29"/>
+  <rect x="150" y="180" width="20" height="40" fill="#5b3a29"/>
+
+  <!-- Head -->
+  <rect x="180" y="80" width="20" height="20" fill="#d9a066"/>
+  <rect x="200" y="80" width="20" height="20" fill="#d9a066"/>
+  <rect x="220" y="80" width="20" height="20" fill="#d9a066"/>
+
+  <rect x="160" y="100" width="20" height="20" fill="#5b3a29"/>
+  <rect x="180" y="100" width="20" height="20" fill="#f2c185"/>
+  <rect x="200" y="100" width="20" height="20" fill="#f2c185"/>
+  <rect x="220" y="100" width="20" height="20" fill="#f2c185"/>
+  <rect x="240" y="100" width="20" height="20" fill="#5b3a29"/>
+
+  <rect x="160" y="120" width="20" height="20" fill="#5b3a29"/>
+  <rect x="180" y="120" width="20" height="20" fill="#f2c185"/>
+  <rect x="200" y="120" width="20" height="20" fill="#ffffff"/>
+  <rect x="220" y="120" width="20" height="20" fill="#ffffff"/>
+  <rect x="240" y="120" width="20" height="20" fill="#5b3a29"/>
+
+  <rect x="160" y="140" width="20" height="20" fill="#d9a066"/>
+  <rect x="180" y="140" width="20" height="20" fill="#f2c185"/>
+  <rect x="200" y="140" width="20" height="20" fill="#000000"/>
+  <rect x="220" y="140" width="20" height="20" fill="#000000"/>
+  <rect x="240" y="140" width="20" height="20" fill="#d9a066"/>
+
+  <!-- Nose -->
+  <rect x="260" y="140" width="20" height="20" fill="#2b1b16"/>
+
+  <!-- Mouth -->
+  <rect x="220" y="160" width="20" height="20" fill="#2b1b16"/>
+
+  <!-- Ears -->
+  <rect x="160" y="60" width="20" height="40" fill="#5b3a29"/>
+  <rect x="240" y="60" width="20" height="40" fill="#5b3a29"/>
+</svg>
