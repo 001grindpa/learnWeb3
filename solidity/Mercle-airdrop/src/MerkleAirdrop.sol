@@ -19,17 +19,17 @@ contract MerkleAirdrop {
     // == EVENTS == //
     event ProofConfirmed(address indexed user, uint256 indexed amount);
 
-    constructor(bytes32 merkleRoot, IERC20 airdropToken) {
+    constructor(bytes32 merkleRoot, address airdropToken) {
         I_MERKLE_ROOT = merkleRoot;
-        I_CHIMCHIM_TOKEN = airdropToken;
+        I_CHIMCHIM_TOKEN = IERC20(airdropToken);
     }
 
-    function claim(address account, uint256 amount, bytes32[] calldata merkleProofs) external {
+    function claim(address account, uint256 amount, bytes32[] calldata merkleProofs) external returns (bool) {
         if (sClaimedUsers[msg.sender] == true) {
             revert MerkleAirdrop__UserAlreadyClaimed();
         }
         // at this point we've already prepared the merkle tree offchain and gotten the original root.
-        // Provided with the user address and their eligible amount, alongside the array of 
+        // Provided with the user address and their eligible amount, alongside the array of
         // sibling leaf hashes we'll use for climbing up the tree untill we get to the equivalent root branch hash
         // we'll hash the address and amount then use that to climb the tree by hashing the computed hash with
         // the first array sibling leaf hash, and continue that for the next sibling and so forth.
@@ -47,6 +47,7 @@ contract MerkleAirdrop {
         emit ProofConfirmed(account, amount);
         // we're using safe transfer so it handles errors better
         I_CHIMCHIM_TOKEN.safeTransfer(account, amount);
+        return true;
     }
 
     // == GETTERS == //
