@@ -20,9 +20,11 @@ import {OracleLib} from "./libraries/OracleLib.sol";
  *
  * it is similar to DAI if DAI had no governance, no fees and was only backed by WETH and WBTC.
  *
- * Our DSC System should always be "overcollateralized". At no point, should the value of all collateral <= the dollar backed value of all the DSC.
+ * Our DSC System should always be "overcollateralized". At no point, should the value of all 
+ * collateral <= the dollar backed value of all the DSC.
  *
- * @notice This contract is the core of the DSC System. It handles all the logic for mining and redeeming DSC, as well as depositing & withdrawing collateral.
+ * @notice This contract is the core of the DSC System. It handles all the logic for mining and 
+ * redeeming DSC, as well as depositing & withdrawing collateral.
  * @notice This contract is VERY loosely based on the MakerDAO DSS (DAI) system.
  */
 

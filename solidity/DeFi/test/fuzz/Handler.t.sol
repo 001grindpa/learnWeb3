@@ -83,8 +83,10 @@ contract Handler is Test {
             state = STATE(0);
         }
         address collateralToken = _getCollateralWithSeed(collateralSeed);
-        // uint256 amountCollateral = bound(amountCollateral, 1, type(uint256).max); // some txns will revert if withdrwal balance limit
-        // is extended higher than the limit of deposit amount, this causes the condition in the require() block below to fail for some txn
+        // uint256 amountCollateral = bound(amountCollateral, 1, type(uint256).max); // 
+        // some txns will revert if withdrwal balance limit
+        // is extended higher than the limit of deposit amount, this causes the condition 
+        // in the require() block below to fail for some txn
         uint256 amountCollateral = bound(amountCollateral, 1, MAX_DEPOSIT_SIZE);
 
         vm.startPrank(msg.sender);

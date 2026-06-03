@@ -83,11 +83,11 @@ contract DSCEngineTest is Test {
     /**
      * @dev Run this test with level 3 verbosity (use flag -vvv)
      */
-    // function testGetTokenPriceOnPublicMap() public {
-    //     AggregatorV3Interface priceFeed = AggregatorV3Interface(engine.sTokenToPriceFeedMap(wbtc));
-    //     (, int256 priceInUsd,,,) = priceFeed.latestRoundData();
-    //     console.log("Token price: $%s", priceInUsd/1e8);
-    // }
+    function testGetTokenPriceOnPublicMap() public {
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(engine.sTokenToPriceFeedMap(wbtc));
+        (, int256 priceInUsd,,,) = priceFeed.latestRoundData();
+        console.log("Token price: $%s", priceInUsd/1e8);
+    }
 
     // == DEPOSIT COLLATERAL TEST == //
 
