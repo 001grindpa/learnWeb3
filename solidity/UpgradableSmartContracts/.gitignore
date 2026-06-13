@@ -14,7 +14,9 @@ docs/
 .env
 
 # Random Files
-.test
+test.py
+# src/test.sol
+# test/test.t.sol
 
 # Libraries
 lib
