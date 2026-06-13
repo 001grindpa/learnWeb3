@@ -45,4 +45,18 @@ contract TestCarDealership is Test {
         // console.log(brandName);
         assertEq("BMW", brandName);
     }
+
+    function testRandomUserCantAddCarToStock() public {
+        vm.prank(user);
+        vm.expectRevert(); // only contract deployer can add to stock
+        carDealership.stockMoreCars("Mercedes-Benz", "C-Class", 2022);
+    }
+
+    function testAddNewCarToStock() public {
+        vm.startPrank(address(this));
+        carDealership.stockMoreCars("Mercedes-Benz", "C-Class", 2022);
+        uint256 carsInStock = carDealership.getTotalCarsInStock();
+        vm.stopPrank();
+        console.log(carsInStock);
+    }
 }

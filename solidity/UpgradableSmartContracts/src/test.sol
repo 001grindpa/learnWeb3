@@ -27,6 +27,7 @@ contract CarDealership {
 
     // events
     event SuccessfulPurchase(string name);
+    event NewcarStocked();
 
     // modifiers
     modifier OnlyAdmin {
@@ -73,8 +74,18 @@ contract CarDealership {
         return "Successful purchase";
     }
 
+    function stockMoreCars(string memory brand, string memory model, uint256 year) public OnlyAdmin returns (string memory) {
+        sAvailableCars[brand][model] = year;
+        emit NewcarStocked();
+        totalAvailableCars += 1;
+        return "Added an extra car to stock";
+    }
+
     // getters
     function getCarsPurchased(address owner) public view returns (uint256) {
         return sCarsPurchased[owner].length;
+    }
+    function getTotalCarsInStock() public view returns (uint256) {
+        return totalAvailableCars;
     }
 }
