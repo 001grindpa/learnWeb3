@@ -27,7 +27,7 @@ contract MinimalAccount is IAccount, Ownable {
     }
 
     modifier requireEntryPointOrOwner {
-        if (msg.sender != address(I_ENTRY_POINT) || msg.sender != owner()) {
+        if (msg.sender != address(I_ENTRY_POINT) && msg.sender != owner()) {
             revert MinimalAccount__NotFromEntryPointOrOwner(msg.sender);
         }
         _;
@@ -42,11 +42,14 @@ contract MinimalAccount is IAccount, Ownable {
 
     // == PUBLIC/EXTERNAL FUNCTIONS == //
     /**
-    * @param des The destination address to send eth to from contract bal
-    * @param val The value to send
-    * @param funcData calldata if any else empty string (0x) is passed
-    * @notice This function allows the EOA or Entry point ca to send eth out of this contract
-    * admin addresses that can call this funcion are in the modifier implementation
+    * @notice This function allows the smart wallet to interact with any type function from 
+    * any contract when the contract address of that contract and the function calldata is given
+    * @param des The contract address we're interacting with
+    * @param val The value of eth if we want to send eth to the provided contract from our balance
+    * pass 0 if no eth is required to be sent
+    * @param funcData encoded calldata containing contract function name alongside it's
+    * passed param value, encoded with 'abi.encodeWithSelector("selector", params...)'
+    * pass empty string if no calldata is required to be interacted with.
      */
     function execute(address des, uint256 val, bytes calldata funcData) external requireEntryPointOrOwner {
         (bool success, bytes memory result) = des.call{value: val}(funcData);

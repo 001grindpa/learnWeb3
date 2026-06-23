@@ -35,9 +35,10 @@ contract HelperConfig is Script {
 
 
             localNetworkConfig = NetworkConfig({
-                entryPoint: address(uint160(5))
+                entryPoint: address(0)
             });
         }
+        return localNetworkConfig;
     }
 
     // === GETTER === //

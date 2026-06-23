@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-import {Script} from "forge-std/Script.sol";
+import {Script, console} from "forge-std/Script.sol";
 import {MinimalAccount} from "../src/MinimalAccount.sol";
 import {HelperConfig} from "./HelperConfig.s.sol";
 
@@ -10,13 +10,14 @@ contract DeployMinimalAccount is Script {
         HelperConfig helperConfig = new HelperConfig();
         HelperConfig.NetworkConfig memory config = helperConfig.getConfig();
         address entryPoint = config.entryPoint;
-
         
         vm.startBroadcast();
-        MinimalAccount minimal = new MinimalAccount(entryPoint);
-        // during testing, ownership is trasfered to the test contract,
-        // so that we can use it to test the implemented execute() function 
-        minimal.transferOwnership(msg.sender);
+        MinimalAccount minimal = new MinimalAccount(entryPoint); 
+        // minimal.transferOwnership(msg.sender); // this line of code is not neccessary because 
+        // the owner would always be the current msg.sender even when we 
+        // insert a third party wallet inside the startBroadcast parenthesis in an attempt to
+        // make the third part wallet owner during this deployment 
+        // console.log(minimal.owner());
         vm.stopBroadcast();
 
         return (minimal, helperConfig);
