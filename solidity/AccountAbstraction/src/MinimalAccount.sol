@@ -14,19 +14,19 @@ contract MinimalAccount is IAccount, Ownable {
     error MinimalAccount__NotFromEntryPoint(address caller);
     error MinimalAccount__NotFromEntryPointOrOwner(address caller);
     error MinimalAccount__CallFailed(bytes data);
-    
+
     // == STATE VARIABLES == //
     IEntryPoint private immutable I_ENTRY_POINT;
 
     // == MODIFIERS == //
-    modifier requireFromEntryPoint {
+    modifier requireFromEntryPoint() {
         if (msg.sender != address(I_ENTRY_POINT)) {
             revert MinimalAccount__NotFromEntryPoint(msg.sender);
         }
         _;
     }
 
-    modifier requireEntryPointOrOwner {
+    modifier requireEntryPointOrOwner() {
         if (msg.sender != address(I_ENTRY_POINT) && msg.sender != owner()) {
             revert MinimalAccount__NotFromEntryPointOrOwner(msg.sender);
         }
@@ -42,14 +42,14 @@ contract MinimalAccount is IAccount, Ownable {
 
     // == PUBLIC/EXTERNAL FUNCTIONS == //
     /**
-    * @notice This function allows the smart wallet to interact with any type function from 
-    * any contract when the contract address of that contract and the function calldata is given
-    * @param des The contract address we're interacting with
-    * @param val The value of eth if we want to send eth to the provided contract from our balance
-    * pass 0 if no eth is required to be sent
-    * @param funcData encoded calldata containing contract function name alongside it's
-    * passed param value, encoded with 'abi.encodeWithSelector("selector", params...)'
-    * pass empty string if no calldata is required to be interacted with.
+     * @notice This function allows the smart wallet to interact with any type function from
+     * any contract when the contract address of that contract and the function calldata is given
+     * @param des The contract address we're interacting with
+     * @param val The value of eth if we want to send eth to the provided contract from our balance
+     * pass 0 if no eth is required to be sent
+     * @param funcData encoded calldata containing contract function name alongside it's
+     * passed param value, encoded with 'abi.encodeWithSelector("selector", params...)'
+     * pass empty string if no calldata is required to be interacted with.
      */
     function execute(address des, uint256 val, bytes calldata funcData) external requireEntryPointOrOwner {
         (bool success, bytes memory result) = des.call{value: val}(funcData);
@@ -70,15 +70,15 @@ contract MinimalAccount is IAccount, Ownable {
      *                               for future calls. Can be withdrawn anytime using "entryPoint.withdrawTo()".
      *                               In case there is a paymaster in the request (or the current deposit is high
      *                               enough), this value will be zero.
-    * @return validationData         - Packaged ValidationData structure. use `_packValidationData` and
-    *                                `_unpackValidationData` to encode and decode.
-    *                                <20-byte> aggregatorOrSigFail - 0 for valid signature, 1 to mark signature failure,
-    *                                otherwise, an address of an "aggregator" contract.
-    *                                <6-byte> validUntil - Last timestamp this operation is valid at, or 0 for "indefinitely"
-    *                                <6-byte> validAfter - First timestamp this operation is valid
-    *                                                    If an account doesn't use time-range, it is enough to
-    *                                                    return SIG_VALIDATION_FAILED value (1) for signature failure.
-    *                                Note that the validation code cannot use block.timestamp (or block.number) directly.
+     * @return validationData         - Packaged ValidationData structure. use `_packValidationData` and
+     *                                `_unpackValidationData` to encode and decode.
+     *                                <20-byte> aggregatorOrSigFail - 0 for valid signature, 1 to mark signature failure,
+     *                                otherwise, an address of an "aggregator" contract.
+     *                                <6-byte> validUntil - Last timestamp this operation is valid at, or 0 for "indefinitely"
+     *                                <6-byte> validAfter - First timestamp this operation is valid
+     *                                                    If an account doesn't use time-range, it is enough to
+     *                                                    return SIG_VALIDATION_FAILED value (1) for signature failure.
+     *                                Note that the validation code cannot use block.timestamp (or block.number) directly.
      */
     function validateUserOp(PackedUserOperation calldata userOp, bytes32 userOpHash, uint256 missingAccountFunds)
         external
@@ -120,9 +120,9 @@ contract MinimalAccount is IAccount, Ownable {
     }
 
     /**
-    * @param missingAccountFunds Is the max amount of gas value in Eth that the Entrypoint contract needs
-    * from this contract wallet in order to pay for the user operation (txn)
-    */
+     * @param missingAccountFunds Is the max amount of gas value in Eth that the Entrypoint contract needs
+     * from this contract wallet in order to pay for the user operation (txn)
+     */
     function _payPrefund(uint256 missingAccountFunds) internal {
         // if gas is required (i.e if missingAccountFunds has value > 0)
         if (missingAccountFunds != 0) {

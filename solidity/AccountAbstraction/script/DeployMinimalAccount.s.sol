@@ -10,14 +10,11 @@ contract DeployMinimalAccount is Script {
         HelperConfig helperConfig = new HelperConfig();
         HelperConfig.NetworkConfig memory config = helperConfig.getConfig();
         address entryPoint = config.entryPoint;
-        
+
         vm.startBroadcast();
-        MinimalAccount minimal = new MinimalAccount(entryPoint); 
-        // minimal.transferOwnership(msg.sender); // this line of code is not neccessary because 
-        // the owner would always be the current msg.sender even when we 
-        // insert a third party wallet inside the startBroadcast parenthesis in an attempt to
-        // make the third part wallet owner during this deployment 
-        // console.log(minimal.owner());
+        MinimalAccount minimal = new MinimalAccount(entryPoint);
+        // transfer ownership from default sender to account in config.account
+        minimal.transferOwnership(config.account);
         vm.stopBroadcast();
 
         return (minimal, helperConfig);
