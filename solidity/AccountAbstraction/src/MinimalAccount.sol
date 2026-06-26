@@ -14,6 +14,7 @@ contract MinimalAccount is IAccount, Ownable {
     error MinimalAccount__NotFromEntryPoint(address caller);
     error MinimalAccount__NotFromEntryPointOrOwner(address caller);
     error MinimalAccount__CallFailed(bytes data);
+    error MinimalAccount__FundMoreThanZeroEther();
 
     // == STATE VARIABLES == //
     IEntryPoint private immutable I_ENTRY_POINT;
@@ -38,7 +39,13 @@ contract MinimalAccount is IAccount, Ownable {
         I_ENTRY_POINT = IEntryPoint(entryPoint);
     }
 
-    receive() external payable {}
+    receive() external payable {
+        fund();
+    }
+
+    fallback() external payable {
+        fund();
+    }
 
     // == PUBLIC/EXTERNAL FUNCTIONS == //
     /**
@@ -90,13 +97,15 @@ contract MinimalAccount is IAccount, Ownable {
         validationData = _validateSignature(userOp, userOpHash);
         // _validateNonce() // we're not going to write the nonce validation for this contract but it's important as well
         _payPrefund(missingAccountFunds);
+
+        return validationData; // explicitly return here
     }
 
     // EIP-191 version of the signed hash
     function _validateSignature(PackedUserOperation calldata userOp, bytes32 userOpHash)
         internal
         view
-        returns (uint256 validationData)
+        returns (uint256)
     {
         // implement code that retrieves the EIP-191 message hash (i.e 0x19 + message string) from the incoming userOperation txn hash
         bytes32 ethSignedMessageHash = MessageHashUtils.toEthSignedMessageHash(userOpHash);
@@ -129,6 +138,15 @@ contract MinimalAccount is IAccount, Ownable {
             // msg.sender is always the entryPoint contract
             (bool success,) = payable(msg.sender).call{value: missingAccountFunds, gas: type(uint256).max}("");
             (success);
+        }
+    }
+
+    /**
+     * @notice This function will manage incoming ether funding
+     */
+    function fund() public payable {
+        if (msg.value == 0) {
+            revert MinimalAccount__FundMoreThanZeroEther();
         }
     }
 
