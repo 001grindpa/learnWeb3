@@ -13,13 +13,19 @@ import {IERC20} from "@openzeppelin/contracts/interfaces/IERC20.sol";
 contract SendPackedUserOp is Script {
     using MessageHashUtils for bytes32;
 
+    /**
+    * @dev This is a intercation function, used to send the first interaction to the deployed contract
+    * it sends a token approval txn calldata
+     */
     function run() external {
         HelperConfig helperConfig = new HelperConfig();
-        address dest = hex""; // insert the arbitrum usdc sepolia ca here
-        address smartWallet = hex""; // insert your deployed smart wallet ca here
+        address dest = 0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d;
+        address smartWallet = 0xb2d42c50f27528BFaF8850cBD667D64B384bDd75;
         uint256 value = 0;
+        // create txn calldata
         bytes memory functionData = 
-        abi.encodeWithSelector(IERC20.approve.selector, smartWallet, 1e18);
+        abi.encodeWithSelector(ERC20.approve.selector, smartWallet, 1e18);
+        // create execute function calldata
         bytes memory executeCallData = 
         abi.encodeWithSelector(MinimalAccount.execute.selector, dest, value, functionData);
 
@@ -28,9 +34,10 @@ contract SendPackedUserOp is Script {
             );
         PackedUserOperation[] memory op = new PackedUserOperation[](1);
         op[0] = packedUserOp;
+
         vm.startBroadcast();
         IEntryPoint(helperConfig.getConfig().entryPoint).handleOps(
-            op, payable(helperConfig.getAnvilConfig().account) // .account repays the bundler for us
+            op, payable(smartWallet) // .account repays the bundler for us
             ); // .account can be a paymaster etc
         vm.stopBroadcast();
         // go to helper config and add a config option for arbitrum
@@ -46,6 +53,8 @@ contract SendPackedUserOp is Script {
         address minimalAccount
     ) public view returns (PackedUserOperation memory) {
         // 1. Generate the unsigned data
+        // since this is a interactions script (for sending the first deployed contract intercation), the generated nonce returned
+        // will be 1 but we set it to 0 by substracting 1 from it, since Nonces are zero indexed.
         uint256 nonce = vm.getNonce(minimalAccount) - 1;
         PackedUserOperation memory unsignedUserOp = _generateUnsignedUserOperation(callData, minimalAccount, nonce);
 
